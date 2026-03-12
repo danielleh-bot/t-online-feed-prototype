@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t-online Branded Feed Prototype</title>
+    <!-- Mapped directly from brand kit fonts.primary and fonts.secondary -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&family=Roboto+Serif:ital,wght@1,600&display=swap" rel="stylesheet">
+    <style>
+        /* Strict JSON Brand Kit Tokens */
+        :root {
+            --magenta: #E20074;
+            --near-black: #171B26;
+            --dark-gray: #474C59;
+            --medium-gray: #8D93A6;
+            --off-white: #F7F9FC;
+            --light-blue-gray: #EBEFF7;
+            --info-blue: #00A0DE;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FFFFFF;
+            color: var(--near-black);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- T-ONLINE HEADER RECREATION --- */
+        .site-header {
+            position: sticky;
+            top: 0;
+            background: #FFFFFF;
+            border-bottom: 3px solid var(--magenta);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--near-black);
+            cursor: pointer;
+        }
+
+        .brand-logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .brand-logo span { color: var(--magenta); }
+
+        .header-center {
+            flex-grow: 1;
+            max-width: 600px;
+            margin: 0 40px;
+        }
+
+        .search-container {
+            display: flex;
+            border: 1px solid var(--light-blue-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .search-container input {
+            flex-grow: 1;
+            border: none;
+            padding: 10px 16px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-container button {
+            background-color: var(--magenta);
+            color: #FFFFFF;
+            border: none;
+            padding: 0 20px;
+            font-weight: 700;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .header-right .login-btn {
+            background: #FFFFFF;
+            border: 1px solid var(--light-blue-gray);
+            color: var(--magenta);
+            padding: 8px 16px;
+            font-weight: 400;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- FAKE ARTICLE CONTEXT --- */
+        .article-context {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--light-blue-gray);
+            padding-bottom: 40px;
+        }
+        .article-context p {
+            font-size: 18px;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+        }
+
+        /* --- FEED SYSTEM --- */
+        .feed-wrapper {
+            max-width: 1000px;
+            margin: 0 auto 100px auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 40px 0 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--light-blue-gray);
+            padding-bottom: 12px;
+        }
+        
+        .section-header-title::after {
+            content: ".";
+            color: var(--magenta);
+        }
+
+        .section-action {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--info-blue);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        /* Master Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        /* --- CARD VARIANTS --- */
+        /* Base Card */
+        .card {
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card-image-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 12px;
+            background: var(--off-white);
+            overflow: hidden;
+        }
+
+        /* Strict JSON rule: no rounded corners */
+        .card-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0;
+            display: block;
+        }
+
+        .card-label {
+            color: var(--dark-gray);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .card-label.opinion {
+            color: var(--magenta);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .card-headline {
+            font-size: 20px;
+            line-height: 1.25;
+            font-weight: 700;
+            color: var(--near-black);
+            margin-bottom: 12px;
+        }
+
+        .card-headline.opinion {
+            font-family: 'Roboto Serif', serif;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .card-meta {
+            color: var(--medium-gray);
+            font-size: 12px;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ad-badge {
+            color: var(--medium-gray);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sizing modifiers */
+        .col-span-2 { grid-column: span 2; } /* Standard 3 across */
+        .col-span-3 { grid-column: span 3; } /* Large 2 across */
+        .col-span-6 { grid-column: span 6; } /* Full width */
+
+        .card-large .card-headline { font-size: 24px; }
+        
+        /* Specific brand sponsors */
+        .sponsor-otto { color: #E50010; font-weight: 900; font-size: 18px; font-style: italic; margin-bottom: 6px; }
+        .sponsor-stihl { display: inline-block; background: var(--near-black); color: #F37021; font-weight: 900; padding: 2px 6px; margin-bottom: 6px; font-size: 14px; }
+        .sponsor-tchibo { font-weight: 700; font-size: 16px; margin-bottom: 6px; color: var(--near-black); }
+
+        /* Horizontal Card Variant (Mehr aus dem Netzwerk) */
+        .card-horizontal {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            border: 1px solid var(--light-blue-gray);
+            background: #FFFFFF;
+            padding: 16px;
+        }
+        
+        .card-horizontal .card-image-container {
+            width: 240px;
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+
+        /* Banner Variant (Villa / Siebmaschinen) */
+        .banner-card {
+            display: flex;
+            border: 1px solid var(--light-blue-gray);
+            background: #FFFFFF;
+            align-items: center;
+            gap: 30px;
+        }
+        .banner-card .card-image-container {
+            width: 45%;
+            margin-bottom: 0;
+        }
+        .banner-card .card-content {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .banner-card .card-headline {
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+        .banner-btn {
+            background: #3174E0; /* Kept generic blue for partner button */
+            color: #FFFFFF;
+            padding: 12px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 24px; /* Partner CTA styling exception permitted in JSON for external widgets */
+            cursor: pointer;
+        }
+
+        /* --- NEW STYLES FOR REALISM --- */
+        .article-container {
+            max-width: 800px;
+            margin: 40px auto 60px auto;
+            padding: 0 20px;
+        }
+        .article-kicker {
+            color: var(--magenta);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .article-h1 {
+            font-size: 40px;
+            line-height: 1.2;
+            color: var(--near-black);
+            margin-bottom: 16px;
+        }
+        .article-meta {
+            color: var(--medium-gray);
+            font-size: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--light-blue-gray);
+        }
+        .article-meta strong {
+            color: var(--near-black);
+        }
+        .article-hero {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            margin-bottom: 24px;
+        }
+        .article-lead {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .article-text {
+            font-size: 18px;
+            color: var(--near-black);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Logos and CTAs */
+        .taboola-logo {
+            font-size: 12px;
+            font-weight: 700;
+            color: #8D93A6;
+            display: flex;
+            align-items: center;
+        }
+        .taboola-logo span {
+            color: #3174E0;
+        }
+        .card-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .banner-card-wrapper {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--light-blue-gray);
+            background: #FFFFFF;
+        }
+        .banner-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 24px;
+            background: #FFFFFF;
+            border-top: 1px solid var(--light-blue-gray);
+        }
+        .banner-card-main {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+        .banner-btn.grey {
+            background: #666;
+        }
+        .network-logo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .card-image-container.relative {
+            position: relative;
+        }
+
+        @media (max-width: 900px) {
+            .col-span-2, .col-span-3 { grid-column: span 3; }
+            .header-center { display: none; }
+            .card-horizontal { flex-direction: column; }
+            .card-horizontal .card-image-container { width: 100%; }
+            .banner-card { flex-direction: column; gap: 0; }
+            .banner-card .card-image-container { width: 100%; }
+        }
+        @media (max-width: 600px) {
+            .col-span-2, .col-span-3 { grid-column: span 6; }
+            .header-right { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header exactly matching screenshot layout -->
+    <header class="site-header">
+        <div class="header-left">
+            <svg class="menu-icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            <div class="brand-logo">t-online<span>.</span></div>
+        </div>
+        <div class="header-center">
+            <div class="search-container">
+                <input type="text" placeholder="Suchbegriff eingeben">
+                <button>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    SUCHEN
+                </button>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="login-btn">
+                E-MAIL LOGIN 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- REALISTIC ARTICLE -->
+    <main class="article-container">
+        <span class="article-kicker">Politik</span>
+        <h1 class="article-h1">Regierungskrise: Berlin steht vor einer harten Zerreißprobe</h1>
+        <div class="article-meta">Von <strong>Florian Harms</strong> | 12.03.2026, 14:30 Uhr</div>
+        <img class="article-hero" src="https://picsum.photos/seed/article1/800/450" alt="Berlin Kanzleramt">
+        <p class="article-lead">Die Lage in der Hauptstadt spitzt sich zu. Nach den jüngsten Verhandlungen zeigen sich deutliche Risse in der Koalition, die nun offen zutage treten.</p>
+        <p class="article-text">Es war ein langer Abend im Kanzleramt. Die Gesichter der Beteiligten sprachen Bände, als sie tief in der Nacht vor die Presse traten. Hinter verschlossenen Türen wurde hart gerungen, doch ein wirklicher Konsens scheint weiter entfernt denn je.</p>
+        <p class="article-text">In den kommenden Tagen wird sich zeigen müssen, ob die Parteispitzen noch die Kraft für einen gemeinsamen Weg aufbringen können, oder ob diese Krise der Auftakt für drastischere politische Konsequenzen ist.</p>
+    </main>
+
+    <div class="feed-wrapper">
+        
+        <!-- SECTION 1: Editorial & Native Ads Mix -->
+        <div class="section-header">
+            <span class="section-header-title">Mehr aus der Redaktion</span>
+            <span class="taboola-logo">Taboola<span>Feed</span></span>
+        </div>
+        <div class="grid">
+            <!-- 3 Standard Cards (col-span-2) -->
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/redaktion1/600/338" alt="Politician">
+                </div>
+                <div class="card-label">Wahl in Baden-Württemberg</div>
+                <div class="card-headline">Umfrage zeigt: So kommt das Hagel-Video bei den Wählern an</div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/redaktion2/600/338" alt="Man with glasses">
+                </div>
+                <div class="card-label">"Wollen wir hier nicht haben"</div>
+                <div class="card-headline">Richter greift ein: Marius Borg Høiby fängt Streit vor Gericht an</div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/redaktion3/600/338" alt="Lemur">
+                </div>
+                <div class="card-label">Bedrohte Tierart</div>
+                <div class="card-headline">Seltene Mongozmakis leben jetzt im Kölner Zoo</div>
+            </a>
+
+            <!-- 2 Large Ad Cards (col-span-3) -->
+            <a href="#" class="card card-large col-span-3">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/ad1/800/450" alt="Security Camera">
+                </div>
+                <div class="card-headline">Diese Kamera schlägt jedes Jahr Tausende von Einbrechern in die Flucht</div>
+                <div class="card-meta">Innovative Smart-Kamera | <span class="ad-badge">Anzeige</span></div>
+            </a>
+            <a href="#" class="card card-large col-span-3">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/ad2/800/450" alt="Mini Heater">
+                </div>
+                <div class="card-headline">Dieses Mini-Gerät heizt jeden Raum und verbraucht fast keinen Strom</div>
+                <div class="card-meta">Techno News | <span class="ad-badge">Anzeige</span></div>
+            </a>
+        </div>
+
+        <!-- SECTION 2: 6-Grid Advertorials -->
+        <div class="grid" style="border-top: 1px solid var(--light-blue-gray); padding-top: 40px;">
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/grid1/600/338" alt="Senior Woman">
+                </div>
+                <div class="card-headline">Unglaublich: Senioren sitzen stundenlang bequem dank...</div>
+                <div class="card-meta">Ergonomisches Sitzkissen | <span class="ad-badge">Anzeige</span></div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/grid2/600/338" alt="Apparel">
+                </div>
+                <div class="card-headline">Eine 70-jährige Dame spricht über diesen äußerst...</div>
+                <div class="card-meta">Zeitschrift Schönheit | <span class="ad-badge">Anzeige</span></div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/grid3/600/338" alt="Sleep Drawing">
+                </div>
+                <div class="card-headline">I Kept Flipping My Pillow... Then I Switched</div>
+                <div class="card-meta">Sleep Support Journal | <span class="ad-badge">Anzeige</span></div>
+            </a>
+            
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/grid4/600/338" alt="Feet">
+                </div>
+                <div class="card-headline">Neuropathie kommt nicht von Vitamin-B-Mangel. Lernen Sie...</div>
+                <div class="card-meta">EMSense | <span class="ad-badge">Anzeige</span></div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/grid5/600/338" alt="Hair growth">
+                </div>
+                <div class="card-headline">Das verborgene Hormon, das heimlich deine Haarfollikel...</div>
+                <div class="card-meta">HaloGrow | <span class="ad-badge">Anzeige</span></div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/grid6/600/338" alt="Skin Care">
+                </div>
+                <div class="card-headline">Meine Haut sah müde und geschwollen aus... bis ich dies...</div>
+                <div class="card-meta">Skin Care | <span class="ad-badge">Anzeige</span></div>
+            </a>
+        </div>
+
+        <!-- SECTION 3: Shopping Branded Ads -->
+        <div class="section-header">
+            <span class="section-header-title">Shopping</span>
+            <a href="#" class="section-action">Anzeigen</a>
+        </div>
+        <div class="grid">
+            <!-- 3 Branded Shopping Cards -->
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/shop1/600/338" alt="Bed setup">
+                </div>
+                <div class="sponsor-otto">OTTO</div>
+                <div class="card-headline" style="font-size: 18px;">Der Weltschlaftag-Deal: Mind. 20% Extra-Rabatt auf viele Betten!</div>
+                <div class="card-meta" style="color: var(--info-blue);">nur bis 16.03. auf otto.de <span style="color: var(--medium-gray); margin-left:4px;">| <span class="ad-badge">Anzeige</span></span></div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/shop2/600/338" alt="Lawnmower">
+                </div>
+                <div><span class="sponsor-stihl">STIHL</span></div>
+                <div class="card-headline" style="font-size: 18px;">Perfekter Schnitt: Bis zu 100 € Cash-back auf Akku-Rasenmäher</div>
+                <div class="card-meta" style="color: var(--info-blue);">Cashback für Deinen Garten <span style="color: var(--medium-gray); margin-left:4px;">| <span class="ad-badge">Anzeige</span></span></div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/shop3/600/338" alt="Children outdoors">
+                </div>
+                <div class="sponsor-tchibo">Tchibo</div>
+                <div class="card-headline" style="font-size: 18px;">Wilde Hasen, bunte Blumen: Fröhliche Mode für Kleinkinder & Babys</div>
+                <div class="card-meta" style="color: var(--info-blue);">diese Woche neu bei tchibo.de <span style="color: var(--medium-gray); margin-left:4px;">| <span class="ad-badge">Anzeige</span></span></div>
+            </a>
+            
+            <!-- 2 Large Ad Cards Below Shopping -->
+            <a href="#" class="card card-large col-span-3">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/shop4/800/450" alt="Shower Tile">
+                </div>
+                <div class="card-headline">Ich schämte mich, als Gäste kamen... bis ich dies fand</div>
+                <div class="card-meta">Synoshi Pro | <span class="ad-badge">Anzeige</span></div>
+            </a>
+            <a href="#" class="card card-large col-span-3">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/shop5/800/450" alt="Knee Brace">
+                </div>
+                <div class="card-headline">Diese "Methode gegen Knieprobleme" hilft wirklich</div>
+                <div class="card-meta">Life Tech Adviser | <span class="ad-badge">Anzeige</span></div>
+            </a>
+        </div>
+
+        <!-- SECTION 4: Banner Ads (Rebuilt with specific Logos and CTAs) -->
+        <div class="grid">
+            <!-- Villa Banner -->
+            <div class="banner-card-wrapper col-span-6" style="margin-bottom: 24px;">
+                <div class="banner-card-main">
+                    <div class="card-image-container" style="width: 45%; margin-bottom: 0;">
+                        <img src="https://picsum.photos/seed/banner1/600/338" alt="Villa">
+                    </div>
+                    <div style="padding: 30px; flex-grow: 1;">
+                        <h2 class="card-headline" style="font-size: 32px; margin-bottom: 0;">Villa mit Skypool in Meran</h2>
+                    </div>
+                </div>
+                <div class="banner-card-footer">
+                    <div class="card-logo-container">
+                        <div style="width: 40px; height: 40px; background: #6B4E23; color: white; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:bold;">LIGNIUS</div>
+                        <span style="font-size: 18px; color: var(--dark-gray);">Lignius RealEstate</span>
+                    </div>
+                    <button class="banner-btn">Kontakt</button>
+                </div>
+            </div>
+
+            <!-- Siebmaschinen Banner -->
+            <div class="banner-card-wrapper col-span-6">
+                <div class="banner-card-main">
+                    <div class="card-image-container" style="width: 45%; margin-bottom: 0;">
+                        <img src="https://picsum.photos/seed/banner2/600/338" alt="Siebmaschine">
+                    </div>
+                    <div style="padding: 30px; flex-grow: 1;">
+                        <h2 class="card-headline" style="font-size: 32px; margin-bottom: 0;">Mutterboden Siebmaschinen</h2>
+                    </div>
+                </div>
+                <div class="banner-card-footer">
+                    <div class="card-logo-container">
+                        <div style="width: 40px; height: 40px; background: #8BC34A; color: white; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; font-style: italic;">G</div>
+                        <span style="font-size: 18px; color: var(--dark-gray);">CZ SCREEN s.r.o.</span>
+                    </div>
+                    <button class="banner-btn grey">Öffnen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: Empfehlungen / Netzwerk -->
+        <div class="section-header">
+            <span class="section-header-title">Empfehlungen der Redaktion</span>
+        </div>
+        <div class="grid">
+            <!-- 3 Opinion/News Cards -->
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/empf1/600/338" alt="Donald Trump">
+                </div>
+                <div class="card-label">USA versus Iran</div>
+                <div class="card-headline">"Das wäre ganz schlecht für Trump"</div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/empf2/600/338" alt="Politician">
+                </div>
+                <div class="card-label">Streit eskaliert</div>
+                <div class="card-headline">Bei Orbán verlieren sie die Nerven</div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/empf3/600/338" alt="Woman speaking">
+                </div>
+                <div class="card-label">Spritpreisbremse an der Tankstelle</div>
+                <div class="card-headline">Katherina Reiche hat recht</div>
+            </a>
+        </div>
+
+        <div class="section-header">
+            <span class="section-header-title">Mehr aus dem Netzwerk</span>
+        </div>
+        <!-- Horizontal Cards mapped to span-6 for stack -->
+        <div class="grid" style="gap: 16px;">
+            <a href="#" class="card-horizontal col-span-6">
+                <div class="card-image-container relative">
+                    <img src="https://picsum.photos/seed/net1/400/225" alt="Router">
+                    <div class="network-logo-overlay" style="background: transparent;">
+                         <!-- Fake GIGA logo overlay -->
+                         <div style="width:24px; height:24px; border-radius:50%; border:2px solid white; display:flex; align-items:center; justify-content:center; margin:8px;">G</div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <div class="card-label" style="color: #0D8033; font-weight: 700;">GIGA</div>
+                    <div class="card-headline" style="margin-bottom: 0;">Bundesamt warnt vor Fritzbox: Das müsst ihr jetzt überprüfen</div>
+                </div>
+            </a>
+            <a href="#" class="card-horizontal col-span-6">
+                <div class="card-image-container relative">
+                    <img src="https://picsum.photos/seed/net2/400/225" alt="Singer">
+                    <div class="network-logo-overlay" style="background: #FFFFFF; color: #171B26; margin: 8px; width: 28px; height: 28px;">
+                        W
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <div class="card-label" style="color: var(--info-blue); font-weight: 700;">watson.de</div>
+                    <div class="card-headline" style="margin-bottom: 0;">"Ekelhaft und unmenschlich": Kesha wütet gegen Donald Trump und das Weiße Haus feiert es</div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
