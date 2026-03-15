@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>t-online Branded Feed Prototype</title>
-    <!-- Mapped directly from brand kit fonts.primary and fonts.secondary -->
+    <title>t-online. | Nachrichten für Deutschland</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&family=Roboto+Serif:ital,wght@1,600&display=swap" rel="stylesheet">
     <style>
-        /* Strict JSON Brand Kit Tokens */
+        /* === Brand Kit Tokens === */
         :root {
             --magenta: #E20074;
             --near-black: #171B26;
@@ -16,91 +15,135 @@
             --off-white: #F7F9FC;
             --light-blue-gray: #EBEFF7;
             --info-blue: #00A0DE;
+            --eilmeldung-yellow: #EAB305;
+            --negative-red: #EE3F54;
+            --positive-green: #0D8033;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
             background-color: #FFFFFF;
             color: var(--near-black);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- T-ONLINE HEADER RECREATION --- */
+        a { text-decoration: none; color: inherit; }
+
+        /* === UTILITY BAR === */
+        .utility-bar {
+            background: var(--off-white);
+            border-bottom: 1px solid var(--light-blue-gray);
+            font-size: 13px;
+            color: var(--dark-gray);
+            padding: 6px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .utility-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .utility-left .weather {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .utility-left .weather svg { flex-shrink: 0; }
+        .stock-ticker {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .stock-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+        .stock-item .label { font-weight: 700; }
+        .stock-item .positive { color: var(--positive-green); }
+        .stock-item .negative { color: var(--negative-red); }
+        .utility-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--medium-gray);
+        }
+        .utility-right a {
+            color: var(--medium-gray);
+            font-size: 12px;
+        }
+        .utility-right a:hover { color: var(--magenta); }
+
+        /* === HEADER / LOGO BAR === */
         .site-header {
-            position: sticky;
-            top: 0;
             background: #FFFFFF;
-            border-bottom: 3px solid var(--magenta);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 12px 24px;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-
         .header-left {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-
         .menu-icon {
             width: 24px;
             height: 24px;
             fill: var(--near-black);
             cursor: pointer;
         }
-
         .brand-logo {
             font-size: 28px;
             font-weight: 700;
             letter-spacing: -0.5px;
+            color: var(--near-black);
         }
-        .brand-logo span { color: var(--magenta); }
-
+        .brand-logo .dot { color: var(--magenta); }
         .header-center {
             flex-grow: 1;
             max-width: 600px;
             margin: 0 40px;
         }
-
         .search-container {
             display: flex;
             border: 1px solid var(--light-blue-gray);
             border-radius: 4px;
             overflow: hidden;
         }
-
         .search-container input {
             flex-grow: 1;
             border: none;
             padding: 10px 16px;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
             font-size: 14px;
             outline: none;
         }
-
         .search-container button {
             background-color: var(--magenta);
             color: #FFFFFF;
             border: none;
             padding: 0 20px;
             font-weight: 700;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
         }
-
         .header-right .login-btn {
             background: #FFFFFF;
             border: 1px solid var(--light-blue-gray);
@@ -108,59 +151,265 @@
             padding: 8px 16px;
             font-weight: 400;
             font-size: 14px;
+            font-family: 'Roboto', Arial, sans-serif;
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            border-radius: 0;
+        }
+        .header-right .login-btn:hover { background: var(--off-white); }
+
+        /* === MAIN NAVIGATION === */
+        .main-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #FFFFFF;
+            border-bottom: 3px solid var(--magenta);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: stretch;
+            padding: 0 24px;
+            overflow-x: auto;
+            gap: 0;
+            scrollbar-width: none;
+        }
+        .nav-inner::-webkit-scrollbar { display: none; }
+        .nav-item {
+            padding: 14px 16px;
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--near-black);
+            white-space: nowrap;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+            transition: border-color 0.15s;
+        }
+        .nav-item:hover { color: var(--magenta); }
+        .nav-item.active {
+            font-weight: 700;
+            border-bottom-color: var(--magenta);
+            color: var(--near-black);
+        }
+        .nav-item.home-icon {
+            color: var(--magenta);
+            display: flex;
+            align-items: center;
+            padding: 14px 12px;
+        }
+        .nav-item.home-icon svg { fill: var(--magenta); }
+
+        /* === EILMELDUNG (BREAKING NEWS) === */
+        .eilmeldung {
+            background: var(--eilmeldung-yellow);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--near-black);
+        }
+        .eilmeldung-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        .eilmeldung-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--magenta);
+            display: inline-block;
+        }
+        .eilmeldung-text { font-weight: 400; }
+        .eilmeldung a { color: var(--near-black); }
+        .eilmeldung a:hover { text-decoration: underline; }
+
+        /* === PAGE LAYOUT === */
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .two-col-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 40px;
+            margin-top: 32px;
         }
 
-        /* --- FAKE ARTICLE CONTEXT --- */
-        .article-context {
-            max-width: 1000px;
-            margin: 60px auto;
-            padding: 0 20px;
-            border-bottom: 1px solid var(--light-blue-gray);
-            padding-bottom: 40px;
+        /* === ARTICLE CONTEXT (Fake article above feed) === */
+        .article-container {
+            max-width: 800px;
+            margin: 40px auto 0 auto;
+            padding: 0 24px;
         }
-        .article-context p {
+        .article-kicker {
+            color: var(--magenta);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .article-h1 {
+            font-size: 34px;
+            line-height: 1.2;
+            color: var(--near-black);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        .article-author-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .article-author-info {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+        .article-author-info strong { color: var(--near-black); }
+        .article-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-top: 1px solid var(--light-blue-gray);
+            border-bottom: 1px solid var(--light-blue-gray);
+            margin-bottom: 24px;
+        }
+        .toolbar-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--dark-gray);
+            font-size: 13px;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        .toolbar-btn svg { fill: var(--dark-gray); }
+        .article-hero {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            margin-bottom: 8px;
+        }
+        .article-caption {
+            font-size: 13px;
+            color: var(--medium-gray);
+            margin-bottom: 24px;
+        }
+        .article-lead {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .article-text {
             font-size: 18px;
             color: var(--dark-gray);
             margin-bottom: 20px;
+            line-height: 1.7;
         }
 
-        /* --- FEED SYSTEM --- */
+        /* === FEED SYSTEM === */
         .feed-wrapper {
-            max-width: 1000px;
-            margin: 0 auto 100px auto;
-            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto 80px auto;
+            padding: 0 24px;
         }
 
+        /* Section Headings with magenta dot */
         .section-header {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            margin: 40px 0 24px 0;
+            margin: 48px 0 24px 0;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            border-bottom: 1px solid var(--light-blue-gray);
-            padding-bottom: 12px;
         }
-        
+        .section-header-title {
+            font-size: 36px;
+            font-weight: 700;
+        }
         .section-header-title::after {
             content: ".";
             color: var(--magenta);
         }
-
         .section-action {
             font-size: 14px;
             font-weight: 700;
-            color: var(--info-blue);
-            text-transform: uppercase;
-            text-decoration: none;
+            color: var(--magenta);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
+        .section-action:hover { text-decoration: underline; }
+        .section-action svg { fill: var(--magenta); }
 
-        /* Master Grid Layout */
+        /* Feed attribution */
+        .feed-attribution {
+            font-size: 11px;
+            color: var(--medium-gray);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .feed-attribution span { color: #3174E0; font-weight: 700; }
+
+        /* Category Filter Pills */
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .filter-pills::-webkit-scrollbar { display: none; }
+        .filter-pill {
+            padding: 8px 16px;
+            border: 1px solid var(--light-blue-gray);
+            border-radius: 100px;
+            font-size: 14px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: var(--near-black);
+            background: #FFFFFF;
+            white-space: nowrap;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .filter-pill:hover { background: var(--off-white); }
+        .filter-pill.active {
+            background: var(--light-blue-gray);
+            font-weight: 700;
+        }
+        .filter-pill svg { fill: var(--near-black); width: 12px; height: 12px; }
+
+        /* Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -168,15 +417,14 @@
             margin-bottom: 40px;
         }
 
-        /* --- CARD VARIANTS --- */
-        /* Base Card */
+        /* === CARD SYSTEM === */
         .card {
             background: #FFFFFF;
             display: flex;
             flex-direction: column;
-            text-decoration: none;
             color: inherit;
         }
+        .card:hover .card-headline { color: var(--magenta); }
 
         .card-image-container {
             width: 100%;
@@ -184,9 +432,8 @@
             margin-bottom: 12px;
             background: var(--off-white);
             overflow: hidden;
+            position: relative;
         }
-
-        /* Strict JSON rule: no rounded corners */
         .card-image-container img {
             width: 100%;
             height: 100%;
@@ -195,12 +442,40 @@
             display: block;
         }
 
+        /* Video play indicator */
+        .video-indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            background: var(--magenta);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+        }
+        .video-indicator svg { fill: #FFFFFF; }
+
+        /* LIVETICKER badge */
+        .liveticker-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: var(--magenta);
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            letter-spacing: 0.5px;
+        }
+
         .card-label {
             color: var(--dark-gray);
             font-size: 14px;
             margin-bottom: 6px;
         }
-
         .card-label.opinion {
             color: var(--magenta);
             font-weight: 700;
@@ -208,13 +483,13 @@
         }
 
         .card-headline {
-            font-size: 20px;
-            line-height: 1.25;
+            font-size: 22px;
+            line-height: 26.4px;
             font-weight: 700;
             color: var(--near-black);
             margin-bottom: 12px;
+            transition: color 0.15s;
         }
-
         .card-headline.opinion {
             font-family: 'Roboto Serif', serif;
             font-style: italic;
@@ -229,7 +504,6 @@
             align-items: center;
             gap: 4px;
         }
-
         .ad-badge {
             color: var(--medium-gray);
             text-transform: uppercase;
@@ -237,140 +511,135 @@
             letter-spacing: 0.5px;
         }
 
-        /* Sizing modifiers */
-        .col-span-2 { grid-column: span 2; } /* Standard 3 across */
-        .col-span-3 { grid-column: span 3; } /* Large 2 across */
-        .col-span-6 { grid-column: span 6; } /* Full width */
+        /* Column spans */
+        .col-span-2 { grid-column: span 2; }
+        .col-span-3 { grid-column: span 3; }
+        .col-span-4 { grid-column: span 4; }
+        .col-span-6 { grid-column: span 6; }
 
-        .card-large .card-headline { font-size: 24px; }
-        
-        /* Specific brand sponsors */
-        .sponsor-otto { color: #E50010; font-weight: 900; font-size: 18px; font-style: italic; margin-bottom: 6px; }
-        .sponsor-stihl { display: inline-block; background: var(--near-black); color: #F37021; font-weight: 900; padding: 2px 6px; margin-bottom: 6px; font-size: 14px; }
-        .sponsor-tchibo { font-weight: 700; font-size: 16px; margin-bottom: 6px; color: var(--near-black); }
+        .card-large .card-headline { font-size: 28px; line-height: 1.2; }
 
-        /* Horizontal Card Variant (Mehr aus dem Netzwerk) */
+        /* === HERO CARD === */
+        .hero-card {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+        }
+        .hero-card .card-image-container {
+            aspect-ratio: 16/9;
+            margin-bottom: 16px;
+        }
+        .hero-card .card-headline {
+            font-size: 28px;
+            line-height: 1.2;
+        }
+        .hero-card .card-lead {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark-gray);
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-column: span 2;
+        }
+        .sidebar-heading {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--near-black);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--magenta);
+        }
+        .sidebar-list {
+            list-style: none;
+        }
+        .sidebar-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-blue-gray);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .sidebar-list li:last-child { border-bottom: none; }
+        .sidebar-rank {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--medium-gray);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 28px;
+        }
+        .sidebar-item-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--near-black);
+            line-height: 1.3;
+        }
+        .sidebar-item-text:hover { color: var(--magenta); }
+        .sidebar-item-label {
+            font-size: 12px;
+            color: var(--medium-gray);
+            margin-bottom: 2px;
+            font-weight: 400;
+        }
+
+        /* === HORIZONTAL CARD (Netzwerk) === */
         .card-horizontal {
             display: flex;
             flex-direction: row;
             gap: 20px;
-            border: 1px solid var(--light-blue-gray);
+            border-bottom: 1px solid var(--light-blue-gray);
             background: #FFFFFF;
-            padding: 16px;
+            padding: 16px 0;
         }
-        
         .card-horizontal .card-image-container {
-            width: 240px;
+            width: 200px;
+            aspect-ratio: 4/3;
             margin-bottom: 0;
             flex-shrink: 0;
         }
-
-        /* Banner Variant (Villa / Siebmaschinen) */
-        .banner-card {
-            display: flex;
-            border: 1px solid var(--light-blue-gray);
-            background: #FFFFFF;
-            align-items: center;
-            gap: 30px;
+        .card-horizontal .card-headline {
+            font-size: 18px;
+            line-height: 1.3;
+            margin-bottom: 4px;
         }
-        .banner-card .card-image-container {
-            width: 45%;
-            margin-bottom: 0;
-        }
-        .banner-card .card-content {
-            padding: 30px;
-            flex-grow: 1;
+        .card-horizontal .card-content {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            justify-content: center;
         }
-        .banner-card .card-headline {
-            font-size: 32px;
-            margin-bottom: 24px;
-        }
-        .banner-btn {
-            background: #3174E0; /* Kept generic blue for partner button */
-            color: #FFFFFF;
-            padding: 12px 32px;
-            font-size: 18px;
-            font-weight: 700;
-            border: none;
-            border-radius: 24px; /* Partner CTA styling exception permitted in JSON for external widgets */
-            cursor: pointer;
-        }
-
-        /* --- NEW STYLES FOR REALISM --- */
-        .article-container {
-            max-width: 800px;
-            margin: 40px auto 60px auto;
-            padding: 0 20px;
-        }
-        .article-kicker {
-            color: var(--magenta);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 14px;
-            margin-bottom: 8px;
-            display: block;
-        }
-        .article-h1 {
-            font-size: 40px;
-            line-height: 1.2;
-            color: var(--near-black);
-            margin-bottom: 16px;
-        }
-        .article-meta {
-            color: var(--medium-gray);
-            font-size: 14px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--light-blue-gray);
-        }
-        .article-meta strong {
-            color: var(--near-black);
-        }
-        .article-hero {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            margin-bottom: 24px;
-        }
-        .article-lead {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--dark-gray);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        .article-text {
-            font-size: 18px;
-            color: var(--near-black);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        /* Logos and CTAs */
-        .taboola-logo {
+        .network-source {
             font-size: 12px;
             font-weight: 700;
-            color: #8D93A6;
-            display: flex;
-            align-items: center;
+            margin-bottom: 4px;
         }
-        .taboola-logo span {
-            color: #3174E0;
-        }
-        .card-logo-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
+
+        /* === BANNER ADS === */
         .banner-card-wrapper {
             display: flex;
             flex-direction: column;
             border: 1px solid var(--light-blue-gray);
             background: #FFFFFF;
+        }
+        .banner-card-main {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+        .banner-card-main .card-image-container {
+            width: 45%;
+            margin-bottom: 0;
+            aspect-ratio: 16/9;
+        }
+        .banner-card-main .banner-text {
+            padding: 30px;
+            flex-grow: 1;
         }
         .banner-card-footer {
             display: flex;
@@ -381,98 +650,385 @@
             background: #FFFFFF;
             border-top: 1px solid var(--light-blue-gray);
         }
-        .banner-card-main {
+        .card-logo-container {
             display: flex;
             align-items: center;
-            gap: 30px;
-            width: 100%;
+            gap: 8px;
         }
-        .banner-btn.grey {
-            background: #666;
+        .banner-btn {
+            background: #3174E0;
+            color: #FFFFFF;
+            padding: 10px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-family: 'Roboto', Arial, sans-serif;
         }
-        .network-logo-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 32px;
-            height: 32px;
+        .banner-btn.grey { background: #666; }
+
+        /* Sponsor brand logos */
+        .sponsor-otto { color: #E50010; font-weight: 900; font-size: 18px; font-style: italic; margin-bottom: 6px; }
+        .sponsor-stihl { display: inline-block; background: var(--near-black); color: #F37021; font-weight: 900; padding: 2px 6px; margin-bottom: 6px; font-size: 14px; }
+        .sponsor-tchibo { font-weight: 700; font-size: 16px; margin-bottom: 6px; color: var(--near-black); }
+
+        /* === SCHLAGZEILEN (Headlines List) === */
+        .schlagzeilen-list {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+        .schlagzeilen-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-blue-gray);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--near-black);
+            cursor: pointer;
+        }
+        .schlagzeilen-item:hover { color: var(--magenta); }
+        .schlagzeilen-item svg { fill: var(--medium-gray); flex-shrink: 0; }
+        .schlagzeilen-label {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--medium-gray);
+            margin-right: 6px;
+        }
+
+        /* === FOOTER === */
+        .site-footer {
+            background: var(--near-black);
+            color: #FFFFFF;
+            padding: 48px 24px 32px 24px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .footer-logo .dot { color: var(--magenta); }
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 700;
         }
-        .card-image-container.relative {
-            position: relative;
+        .footer-social a:hover { background: var(--magenta); }
+        .footer-sections {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+        .footer-section h4 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            color: #FFFFFF;
+            letter-spacing: 0.5px;
+        }
+        .footer-section .footer-links {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer-section .footer-links a {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            padding: 6px 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            white-space: nowrap;
+        }
+        .footer-section .footer-links a:hover {
+            border-color: var(--magenta);
+            color: #FFFFFF;
+        }
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .footer-telekom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+        .footer-telekom .t-logo {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--magenta);
+        }
+        .footer-legal {
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
         }
 
+        /* === RESPONSIVE === */
+        @media (max-width: 1000px) {
+            .two-col-layout { grid-template-columns: 1fr; }
+            .hero-card { grid-column: span 6; }
+            .sidebar { grid-column: span 6; }
+            .footer-sections { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 900px) {
             .col-span-2, .col-span-3 { grid-column: span 3; }
             .header-center { display: none; }
             .card-horizontal { flex-direction: column; }
             .card-horizontal .card-image-container { width: 100%; }
-            .banner-card { flex-direction: column; gap: 0; }
-            .banner-card .card-image-container { width: 100%; }
+            .banner-card-main { flex-direction: column; gap: 0; }
+            .banner-card-main .card-image-container { width: 100%; }
         }
         @media (max-width: 600px) {
             .col-span-2, .col-span-3 { grid-column: span 6; }
             .header-right { display: none; }
+            .utility-bar { display: none; }
+            .article-h1 { font-size: 26px; }
+            .section-header-title { font-size: 28px; }
+            .footer-sections { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header exactly matching screenshot layout -->
+    <!-- UTILITY BAR -->
+    <div class="utility-bar">
+        <div class="utility-left">
+            <span class="weather">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#8D93A6"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg>
+                Berlin 14°C
+            </span>
+            <div class="stock-ticker">
+                <span class="stock-item"><span class="label">DAX</span> 22.543 <span class="positive">+0,42%</span></span>
+                <span class="stock-item"><span class="label">Gold</span> 2.988 <span class="positive">+0,18%</span></span>
+                <span class="stock-item"><span class="label">Bitcoin</span> 83.214 <span class="negative">-1,23%</span></span>
+                <span class="stock-item"><span class="label">Öl Brent</span> 70,45 <span class="negative">-0,56%</span></span>
+            </div>
+        </div>
+        <div class="utility-right">
+            <a href="#">Spiele</a>
+            <a href="#">Themen</a>
+            <a href="#">t-online.de Browser</a>
+        </div>
+    </div>
+
+    <!-- HEADER / LOGO BAR -->
     <header class="site-header">
         <div class="header-left">
             <svg class="menu-icon" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-            <div class="brand-logo">t-online<span>.</span></div>
+            <div class="brand-logo">t-online<span class="dot">.</span></div>
         </div>
         <div class="header-center">
             <div class="search-container">
                 <input type="text" placeholder="Suchbegriff eingeben">
                 <button>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    SUCHEN
+                    Suchen
                 </button>
             </div>
         </div>
         <div class="header-right">
             <button class="login-btn">
-                E-MAIL LOGIN 
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                E-Mail Login
             </button>
         </div>
     </header>
 
-    <!-- REALISTIC ARTICLE -->
+    <!-- MAIN NAVIGATION -->
+    <nav class="main-nav">
+        <div class="nav-inner">
+            <a class="nav-item home-icon" href="#">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </a>
+            <a class="nav-item active" href="#">Nachrichten</a>
+            <a class="nav-item" href="#">Sport</a>
+            <a class="nav-item" href="#">Unterhaltung</a>
+            <a class="nav-item" href="#">Ratgeber</a>
+            <a class="nav-item" href="#">Politik</a>
+            <a class="nav-item" href="#">Wirtschaft &amp; Finanzen</a>
+            <a class="nav-item" href="#">Panorama</a>
+            <a class="nav-item" href="#">Video</a>
+            <a class="nav-item" href="#">Wetter</a>
+            <a class="nav-item" href="#">Gesundheit</a>
+            <a class="nav-item" href="#">Digital</a>
+            <a class="nav-item" href="#">Auto</a>
+            <a class="nav-item" href="#">Heim &amp; Garten</a>
+        </div>
+    </nav>
+
+    <!-- EILMELDUNG (BREAKING NEWS) -->
+    <div class="eilmeldung">
+        <span class="eilmeldung-badge"><span class="dot"></span> Eilmeldung</span>
+        <a href="#">Iran-Krieg: Rakete trifft italienische Militärbasis &mdash; mehrere Verletzte gemeldet</a>
+    </div>
+
+    <!-- ARTICLE -->
     <main class="article-container">
         <span class="article-kicker">Politik</span>
         <h1 class="article-h1">Regierungskrise: Berlin steht vor einer harten Zerreißprobe</h1>
-        <div class="article-meta">Von <strong>Florian Harms</strong> | 12.03.2026, 14:30 Uhr</div>
+        <div class="article-author-row">
+            <img class="author-avatar" src="https://picsum.photos/seed/author1/80/80" alt="Florian Harms">
+            <div class="article-author-info">
+                Von <strong>Florian Harms</strong><br>
+                12.03.2026, 14:30 Uhr
+            </div>
+        </div>
+        <div class="article-toolbar">
+            <button class="toolbar-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.35 2.96 2.96 2.96 1.61 0 2.96-1.35 2.96-2.96 0-1.61-1.35-2.96-2.96-2.96z"/></svg>
+                Teilen
+            </button>
+            <button class="toolbar-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+                Feedback
+            </button>
+            <button class="toolbar-btn" style="margin-left: auto;">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+                Tt
+            </button>
+        </div>
         <img class="article-hero" src="https://picsum.photos/seed/article1/800/450" alt="Berlin Kanzleramt">
+        <div class="article-caption">Das Kanzleramt in Berlin: Harte Verhandlungen bis tief in die Nacht. (Quelle: Reuters/Fabrizio Bensch)</div>
         <p class="article-lead">Die Lage in der Hauptstadt spitzt sich zu. Nach den jüngsten Verhandlungen zeigen sich deutliche Risse in der Koalition, die nun offen zutage treten.</p>
         <p class="article-text">Es war ein langer Abend im Kanzleramt. Die Gesichter der Beteiligten sprachen Bände, als sie tief in der Nacht vor die Presse traten. Hinter verschlossenen Türen wurde hart gerungen, doch ein wirklicher Konsens scheint weiter entfernt denn je.</p>
         <p class="article-text">In den kommenden Tagen wird sich zeigen müssen, ob die Parteispitzen noch die Kraft für einen gemeinsamen Weg aufbringen können, oder ob diese Krise der Auftakt für drastischere politische Konsequenzen ist.</p>
     </main>
 
+    <!-- === FEED === -->
     <div class="feed-wrapper">
-        
-        <!-- SECTION 1: Editorial & Native Ads Mix -->
+
+        <!-- SECTION: Hero + Sidebar layout -->
         <div class="section-header">
             <span class="section-header-title">Mehr aus der Redaktion</span>
-            <span class="taboola-logo">Taboola<span>Feed</span></span>
         </div>
+        <div class="feed-attribution">Empfohlen von Taboola<span>Feed</span></div>
+
         <div class="grid">
-            <!-- 3 Standard Cards (col-span-2) -->
-            <a href="#" class="card col-span-2">
+            <!-- Hero Card -->
+            <a href="#" class="card hero-card">
                 <div class="card-image-container">
-                    <img src="https://picsum.photos/seed/redaktion1/600/338" alt="Politician">
+                    <img src="https://picsum.photos/seed/hero1/800/450" alt="Wahlkampf">
+                    <span class="liveticker-badge">Liveticker</span>
                 </div>
                 <div class="card-label">Wahl in Baden-Württemberg</div>
-                <div class="card-headline">Umfrage zeigt: So kommt das Hagel-Video bei den Wählern an</div>
+                <div class="card-headline" style="font-size: 28px; line-height: 1.2;">Umfrage zeigt: So kommt das Hagel-Video bei den Wählern an</div>
+                <div class="card-lead" style="font-size:16px; color: var(--dark-gray); line-height:1.5; margin-top: 8px;">Die jüngste Kontroverse um ein Wahlkampfvideo sorgt für erhebliche Verschiebungen in den Umfragen.</div>
             </a>
+
+            <!-- Sidebar: Meistgelesen -->
+            <div class="sidebar">
+                <div class="sidebar-heading">Meistgelesen</div>
+                <ul class="sidebar-list">
+                    <li>
+                        <span class="sidebar-rank">1</span>
+                        <div>
+                            <div class="sidebar-item-label">Panorama</div>
+                            <a href="#" class="sidebar-item-text">Richter greift ein: Marius Borg Høiby fängt Streit vor Gericht an</a>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sidebar-rank">2</span>
+                        <div>
+                            <div class="sidebar-item-label">Wirtschaft</div>
+                            <a href="#" class="sidebar-item-text">Dieses Dax-Unternehmen steht vor dem Aus</a>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sidebar-rank">3</span>
+                        <div>
+                            <div class="sidebar-item-label">Tiere</div>
+                            <a href="#" class="sidebar-item-text">Seltene Mongozmakis leben jetzt im Kölner Zoo</a>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sidebar-rank">4</span>
+                        <div>
+                            <div class="sidebar-item-label">Politik</div>
+                            <a href="#" class="sidebar-item-text">Scholz warnt: "Das darf sich nicht wiederholen"</a>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="sidebar-rank">5</span>
+                        <div>
+                            <div class="sidebar-item-label">Sport</div>
+                            <a href="#" class="sidebar-item-text">BVB-Spieler sorgt mit Aussage für Wirbel</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Schlagzeilen list -->
+        <div class="section-header">
+            <span class="section-header-title">Schlagzeilen</span>
+            <a href="#" class="section-action">
+                Alle anzeigen
+                <svg width="14" height="14" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </a>
+        </div>
+        <ul class="schlagzeilen-list">
+            <li class="schlagzeilen-item">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <span class="schlagzeilen-label">Iran-Konflikt</span>
+                Raketenangriff trifft NATO-Stützpunkt &mdash; Berlin reagiert
+            </li>
+            <li class="schlagzeilen-item">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <span class="schlagzeilen-label">Wirtschaft</span>
+                Inflation steigt überraschend &mdash; EZB unter Druck
+            </li>
+            <li class="schlagzeilen-item">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <span class="schlagzeilen-label">Fußball</span>
+                Champions League: Bayern bangen vor Viertelfinale
+            </li>
+            <li class="schlagzeilen-item">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <span class="schlagzeilen-label">Gesundheit</span>
+                Neue Studie: So gefährlich ist Mikroplastik im Blut wirklich
+            </li>
+        </ul>
+
+        <!-- SECTION: Editorial + Native Ads grid -->
+        <div class="grid">
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/redaktion2/600/338" alt="Man with glasses">
@@ -483,82 +1039,154 @@
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/redaktion3/600/338" alt="Lemur">
+                    <span class="video-indicator">
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
                 </div>
                 <div class="card-label">Bedrohte Tierart</div>
                 <div class="card-headline">Seltene Mongozmakis leben jetzt im Kölner Zoo</div>
             </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/opinion1/600/338" alt="Columnist">
+                </div>
+                <div class="card-label opinion">Meinung</div>
+                <div class="card-headline opinion">Katherina Reiche hat recht &mdash; und wir sollten ihr zuhören</div>
+            </a>
 
-            <!-- 2 Large Ad Cards (col-span-3) -->
-            <a href="#" class="card card-large col-span-3">
+            <!-- Native Ad Cards (half width) -->
+            <a href="#" class="card col-span-3">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/ad1/800/450" alt="Security Camera">
                 </div>
-                <div class="card-headline">Diese Kamera schlägt jedes Jahr Tausende von Einbrechern in die Flucht</div>
+                <div class="card-headline" style="font-size: 20px;">Diese Kamera schlägt jedes Jahr Tausende von Einbrechern in die Flucht</div>
                 <div class="card-meta">Innovative Smart-Kamera | <span class="ad-badge">Anzeige</span></div>
             </a>
-            <a href="#" class="card card-large col-span-3">
+            <a href="#" class="card col-span-3">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/ad2/800/450" alt="Mini Heater">
                 </div>
-                <div class="card-headline">Dieses Mini-Gerät heizt jeden Raum und verbraucht fast keinen Strom</div>
+                <div class="card-headline" style="font-size: 20px;">Dieses Mini-Gerät heizt jeden Raum und verbraucht fast keinen Strom</div>
                 <div class="card-meta">Techno News | <span class="ad-badge">Anzeige</span></div>
             </a>
         </div>
 
-        <!-- SECTION 2: 6-Grid Advertorials -->
+        <!-- SECTION: Video. -->
+        <div class="section-header">
+            <span class="section-header-title">Video</span>
+            <a href="#" class="section-action">
+                Alle Videos
+                <svg width="14" height="14" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </a>
+        </div>
+        <div class="filter-pills">
+            <button class="filter-pill active">Alle</button>
+            <button class="filter-pill">Nachrichten
+                <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <button class="filter-pill">Sport</button>
+            <button class="filter-pill">Unterhaltung</button>
+            <button class="filter-pill">Ratgeber</button>
+            <button class="filter-pill">Wissen</button>
+        </div>
+        <div class="grid">
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/vid1/600/338" alt="News Video">
+                    <span class="video-indicator">
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                </div>
+                <div class="card-label">Iran-Krieg</div>
+                <div class="card-headline" style="font-size:18px;">Dramatische Bilder: So sieht es nach dem Raketenangriff aus</div>
+                <div class="card-meta">2:34 Min.</div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/vid2/600/338" alt="Sport Video">
+                    <span class="video-indicator">
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                </div>
+                <div class="card-label">Bundesliga</div>
+                <div class="card-headline" style="font-size:18px;">Alle Tore vom Samstag: Bayern rettet sich in letzter Minute</div>
+                <div class="card-meta">4:12 Min.</div>
+            </a>
+            <a href="#" class="card col-span-2">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/vid3/600/338" alt="Weather Video">
+                    <span class="video-indicator">
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                </div>
+                <div class="card-label">Wetter</div>
+                <div class="card-headline" style="font-size:18px;">Sturmwarnung: Diese Regionen müssen sich am Montag wappnen</div>
+                <div class="card-meta">1:45 Min.</div>
+            </a>
+        </div>
+
+        <!-- SECTION: 6-Grid Advertorials -->
         <div class="grid" style="border-top: 1px solid var(--light-blue-gray); padding-top: 40px;">
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/grid1/600/338" alt="Senior Woman">
                 </div>
-                <div class="card-headline">Unglaublich: Senioren sitzen stundenlang bequem dank...</div>
+                <div class="card-headline" style="font-size:18px;">Unglaublich: Senioren sitzen stundenlang bequem dank...</div>
                 <div class="card-meta">Ergonomisches Sitzkissen | <span class="ad-badge">Anzeige</span></div>
             </a>
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/grid2/600/338" alt="Apparel">
                 </div>
-                <div class="card-headline">Eine 70-jährige Dame spricht über diesen äußerst...</div>
+                <div class="card-headline" style="font-size:18px;">Eine 70-jährige Dame spricht über diesen äußerst...</div>
                 <div class="card-meta">Zeitschrift Schönheit | <span class="ad-badge">Anzeige</span></div>
             </a>
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/grid3/600/338" alt="Sleep Drawing">
                 </div>
-                <div class="card-headline">I Kept Flipping My Pillow... Then I Switched</div>
+                <div class="card-headline" style="font-size:18px;">Besser schlafen: Warum alle über dieses Kissen reden</div>
                 <div class="card-meta">Sleep Support Journal | <span class="ad-badge">Anzeige</span></div>
             </a>
-            
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/grid4/600/338" alt="Feet">
                 </div>
-                <div class="card-headline">Neuropathie kommt nicht von Vitamin-B-Mangel. Lernen Sie...</div>
+                <div class="card-headline" style="font-size:18px;">Neuropathie kommt nicht von Vitamin-B-Mangel. Lernen Sie...</div>
                 <div class="card-meta">EMSense | <span class="ad-badge">Anzeige</span></div>
             </a>
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/grid5/600/338" alt="Hair growth">
                 </div>
-                <div class="card-headline">Das verborgene Hormon, das heimlich deine Haarfollikel...</div>
+                <div class="card-headline" style="font-size:18px;">Das verborgene Hormon, das heimlich deine Haarfollikel...</div>
                 <div class="card-meta">HaloGrow | <span class="ad-badge">Anzeige</span></div>
             </a>
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/grid6/600/338" alt="Skin Care">
                 </div>
-                <div class="card-headline">Meine Haut sah müde und geschwollen aus... bis ich dies...</div>
+                <div class="card-headline" style="font-size:18px;">Meine Haut sah müde und geschwollen aus... bis ich dies...</div>
                 <div class="card-meta">Skin Care | <span class="ad-badge">Anzeige</span></div>
             </a>
         </div>
 
-        <!-- SECTION 3: Shopping Branded Ads -->
+        <!-- SECTION: Shopping. -->
         <div class="section-header">
             <span class="section-header-title">Shopping</span>
-            <a href="#" class="section-action">Anzeigen</a>
+            <a href="#" class="section-action">
+                Alle Angebote
+                <svg width="14" height="14" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </a>
+        </div>
+        <div class="filter-pills">
+            <button class="filter-pill active">Top-Deals</button>
+            <button class="filter-pill">Mode</button>
+            <button class="filter-pill">Technik</button>
+            <button class="filter-pill">Haus &amp; Garten</button>
+            <button class="filter-pill">Sport</button>
         </div>
         <div class="grid">
-            <!-- 3 Branded Shopping Cards -->
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/shop1/600/338" alt="Bed setup">
@@ -572,7 +1200,7 @@
                     <img src="https://picsum.photos/seed/shop2/600/338" alt="Lawnmower">
                 </div>
                 <div><span class="sponsor-stihl">STIHL</span></div>
-                <div class="card-headline" style="font-size: 18px;">Perfekter Schnitt: Bis zu 100 € Cash-back auf Akku-Rasenmäher</div>
+                <div class="card-headline" style="font-size: 18px;">Perfekter Schnitt: Bis zu 100 &euro; Cash-back auf Akku-Rasenmäher</div>
                 <div class="card-meta" style="color: var(--info-blue);">Cashback für Deinen Garten <span style="color: var(--medium-gray); margin-left:4px;">| <span class="ad-badge">Anzeige</span></span></div>
             </a>
             <a href="#" class="card col-span-2">
@@ -580,36 +1208,33 @@
                     <img src="https://picsum.photos/seed/shop3/600/338" alt="Children outdoors">
                 </div>
                 <div class="sponsor-tchibo">Tchibo</div>
-                <div class="card-headline" style="font-size: 18px;">Wilde Hasen, bunte Blumen: Fröhliche Mode für Kleinkinder & Babys</div>
+                <div class="card-headline" style="font-size: 18px;">Wilde Hasen, bunte Blumen: Fröhliche Mode für Kleinkinder &amp; Babys</div>
                 <div class="card-meta" style="color: var(--info-blue);">diese Woche neu bei tchibo.de <span style="color: var(--medium-gray); margin-left:4px;">| <span class="ad-badge">Anzeige</span></span></div>
             </a>
-            
-            <!-- 2 Large Ad Cards Below Shopping -->
-            <a href="#" class="card card-large col-span-3">
+            <a href="#" class="card col-span-3">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/shop4/800/450" alt="Shower Tile">
                 </div>
-                <div class="card-headline">Ich schämte mich, als Gäste kamen... bis ich dies fand</div>
+                <div class="card-headline" style="font-size: 20px;">Ich schämte mich, als Gäste kamen... bis ich dies fand</div>
                 <div class="card-meta">Synoshi Pro | <span class="ad-badge">Anzeige</span></div>
             </a>
-            <a href="#" class="card card-large col-span-3">
+            <a href="#" class="card col-span-3">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/shop5/800/450" alt="Knee Brace">
                 </div>
-                <div class="card-headline">Diese "Methode gegen Knieprobleme" hilft wirklich</div>
+                <div class="card-headline" style="font-size: 20px;">Diese "Methode gegen Knieprobleme" hilft wirklich</div>
                 <div class="card-meta">Life Tech Adviser | <span class="ad-badge">Anzeige</span></div>
             </a>
         </div>
 
-        <!-- SECTION 4: Banner Ads (Rebuilt with specific Logos and CTAs) -->
+        <!-- SECTION: Banner Ads -->
         <div class="grid">
-            <!-- Villa Banner -->
             <div class="banner-card-wrapper col-span-6" style="margin-bottom: 24px;">
                 <div class="banner-card-main">
-                    <div class="card-image-container" style="width: 45%; margin-bottom: 0;">
+                    <div class="card-image-container">
                         <img src="https://picsum.photos/seed/banner1/600/338" alt="Villa">
                     </div>
-                    <div style="padding: 30px; flex-grow: 1;">
+                    <div class="banner-text">
                         <h2 class="card-headline" style="font-size: 32px; margin-bottom: 0;">Villa mit Skypool in Meran</h2>
                     </div>
                 </div>
@@ -621,14 +1246,12 @@
                     <button class="banner-btn">Kontakt</button>
                 </div>
             </div>
-
-            <!-- Siebmaschinen Banner -->
             <div class="banner-card-wrapper col-span-6">
                 <div class="banner-card-main">
-                    <div class="card-image-container" style="width: 45%; margin-bottom: 0;">
+                    <div class="card-image-container">
                         <img src="https://picsum.photos/seed/banner2/600/338" alt="Siebmaschine">
                     </div>
-                    <div style="padding: 30px; flex-grow: 1;">
+                    <div class="banner-text">
                         <h2 class="card-headline" style="font-size: 32px; margin-bottom: 0;">Mutterboden Siebmaschinen</h2>
                     </div>
                 </div>
@@ -642,12 +1265,11 @@
             </div>
         </div>
 
-        <!-- SECTION 5: Empfehlungen / Netzwerk -->
+        <!-- SECTION: Empfehlungen der Redaktion. -->
         <div class="section-header">
             <span class="section-header-title">Empfehlungen der Redaktion</span>
         </div>
         <div class="grid">
-            <!-- 3 Opinion/News Cards -->
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/empf1/600/338" alt="Donald Trump">
@@ -665,45 +1287,113 @@
             <a href="#" class="card col-span-2">
                 <div class="card-image-container">
                     <img src="https://picsum.photos/seed/empf3/600/338" alt="Woman speaking">
+                    <span class="video-indicator">
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
                 </div>
-                <div class="card-label">Spritpreisbremse an der Tankstelle</div>
-                <div class="card-headline">Katherina Reiche hat recht</div>
+                <div class="card-label opinion">Meinung</div>
+                <div class="card-headline opinion">Spritpreisbremse an der Tankstelle: Katherina Reiche hat recht</div>
             </a>
         </div>
 
+        <!-- SECTION: Mehr aus dem Netzwerk. -->
         <div class="section-header">
             <span class="section-header-title">Mehr aus dem Netzwerk</span>
         </div>
-        <!-- Horizontal Cards mapped to span-6 for stack -->
-        <div class="grid" style="gap: 16px;">
-            <a href="#" class="card-horizontal col-span-6">
-                <div class="card-image-container relative">
-                    <img src="https://picsum.photos/seed/net1/400/225" alt="Router">
-                    <div class="network-logo-overlay" style="background: transparent;">
-                         <!-- Fake GIGA logo overlay -->
-                         <div style="width:24px; height:24px; border-radius:50%; border:2px solid white; display:flex; align-items:center; justify-content:center; margin:8px;">G</div>
-                    </div>
+        <div style="margin-bottom: 40px;">
+            <a href="#" class="card-horizontal">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/net1/400/300" alt="Router">
                 </div>
-                <div style="display: flex; flex-direction: column; justify-content: center;">
-                    <div class="card-label" style="color: #0D8033; font-weight: 700;">GIGA</div>
-                    <div class="card-headline" style="margin-bottom: 0;">Bundesamt warnt vor Fritzbox: Das müsst ihr jetzt überprüfen</div>
+                <div class="card-content">
+                    <div class="network-source" style="color: var(--positive-green);">GIGA</div>
+                    <div class="card-headline">Bundesamt warnt vor Fritzbox: Das müsst ihr jetzt überprüfen</div>
                 </div>
             </a>
-            <a href="#" class="card-horizontal col-span-6">
-                <div class="card-image-container relative">
-                    <img src="https://picsum.photos/seed/net2/400/225" alt="Singer">
-                    <div class="network-logo-overlay" style="background: #FFFFFF; color: #171B26; margin: 8px; width: 28px; height: 28px;">
-                        W
-                    </div>
+            <a href="#" class="card-horizontal">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/net2/400/300" alt="Singer">
                 </div>
-                <div style="display: flex; flex-direction: column; justify-content: center;">
-                    <div class="card-label" style="color: var(--info-blue); font-weight: 700;">watson.de</div>
-                    <div class="card-headline" style="margin-bottom: 0;">"Ekelhaft und unmenschlich": Kesha wütet gegen Donald Trump und das Weiße Haus feiert es</div>
+                <div class="card-content">
+                    <div class="network-source" style="color: var(--info-blue);">watson.de</div>
+                    <div class="card-headline">"Ekelhaft und unmenschlich": Kesha wütet gegen Donald Trump</div>
+                </div>
+            </a>
+            <a href="#" class="card-horizontal">
+                <div class="card-image-container">
+                    <img src="https://picsum.photos/seed/net3/400/300" alt="Smartphone">
+                </div>
+                <div class="card-content">
+                    <div class="network-source" style="color: #E50010;">desired.de</div>
+                    <div class="card-headline">WhatsApp: Diese Einstellung solltest du sofort ändern</div>
                 </div>
             </a>
         </div>
 
     </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-logo">t-online<span class="dot">.</span></div>
+                <div class="footer-social">
+                    <a href="#" title="Facebook">f</a>
+                    <a href="#" title="X (Twitter)">X</a>
+                    <a href="#" title="Instagram">in</a>
+                    <a href="#" title="YouTube">&#9654;</a>
+                    <a href="#" title="Spotify">&#9835;</a>
+                </div>
+            </div>
+            <div class="footer-sections">
+                <div class="footer-section">
+                    <h4>Das Unternehmen</h4>
+                    <nav class="footer-links">
+                        <a href="#">Über uns</a>
+                        <a href="#">Karriere</a>
+                        <a href="#">Presse</a>
+                        <a href="#">Kontakt</a>
+                    </nav>
+                </div>
+                <div class="footer-section">
+                    <h4>Produkte &amp; Services</h4>
+                    <nav class="footer-links">
+                        <a href="#">E-Mail</a>
+                        <a href="#">Shopping</a>
+                        <a href="#">t-online Browser</a>
+                        <a href="#">Nachrichten-App</a>
+                    </nav>
+                </div>
+                <div class="footer-section">
+                    <h4>Netzwerk &amp; Partner</h4>
+                    <nav class="footer-links">
+                        <a href="#">Ströer</a>
+                        <a href="#">Statista</a>
+                        <a href="#">watson.de</a>
+                        <a href="#">GIGA</a>
+                    </nav>
+                </div>
+                <div class="footer-section">
+                    <h4>Telekom Produkte</h4>
+                    <nav class="footer-links">
+                        <a href="#">MagentaTV</a>
+                        <a href="#">MagentaMobil</a>
+                        <a href="#">MagentaZuhause</a>
+                        <a href="#">Telekom Tarife</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-telekom">
+                    <span class="t-logo">T</span>
+                    Erleben, was verbindet. | Ein Angebot der Ströer Digital Publishing GmbH
+                </div>
+                <div class="footer-legal">
+                    Impressum | Datenschutz | AGB | &copy; 2026 t-online
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
